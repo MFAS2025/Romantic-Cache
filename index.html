@@ -17,26 +17,24 @@
       min-height: 100vh;
     }
 
-    .logo {
-      font-size: 2.5em;
-      margin-top: 20px;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.2);
-      }
-    }
-
     h1 {
       font-family: 'Pacifico', cursive;
       font-size: 3em;
       color: #d6336c;
-      margin-top: 0.2em;
+      margin-top: 0.5em;
+      text-align: center;
+    }
+
+    .heart-logo {
+      font-size: 2em;
+      animation: pulse 1.5s infinite;
+      margin-top: 10px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     .heart-bulb {
@@ -47,7 +45,6 @@
       margin: 20px 0;
       transform: rotate(-45deg);
       box-shadow: 0 0 20px rgba(255,0,0,0.6);
-      transition: opacity 0.3s, box-shadow 0.3s;
     }
 
     .heart-bulb:before,
@@ -70,22 +67,6 @@
       top: 0;
     }
 
-    .love-toggle {
-      margin-bottom: 20px;
-    }
-
-    .love-toggle label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: bold;
-      color: #d6336c;
-    }
-
-    .love-toggle input {
-      transform: scale(1.5);
-    }
-
     .name-edit {
       display: flex;
       gap: 10px;
@@ -98,6 +79,22 @@
       border-radius: 10px;
       border: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .profile-pics {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-pic {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
     .section {
@@ -128,53 +125,63 @@
       box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
     }
 
-    .profile-pictures {
+    .toggle-love {
       display: flex;
-      gap: 30px;
+      justify-content: center;
+      gap: 40px;
+      align-items: center;
       margin: 20px 0;
     }
 
-    .profile-pictures div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .toggle-wrapper {
+      text-align: center;
     }
 
-    .profile-pictures img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      margin-bottom: 10px;
+    .love-toggle {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      filter: drop-shadow(0 0 5px rgba(0,0,0,0.2));
+    }
+
+    .love-toggle.off {
+      filter: grayscale(100%) brightness(0.6);
     }
   </style>
 </head>
 <body>
-  <div class="logo">❤️</div>
+  <div class="heart-logo">❤️</div>
   <h1><span id="name1">Ck</span> ❤️ <span id="name2">Mavi</span></h1>
 
-  <div class="love-toggle">
-    <label>
-      <input type="checkbox" id="loveSwitch" checked /> Still in love ❤️
-    </label>
-  </div>
+  <div class="profile-pics">
+    <div class="toggle-wrapper">
+      <label for="imgUpload1">
+        <img id="img1" class="profile-pic" src="" alt="" />
+      </label><br />
+      <input type="file" id="imgUpload1" accept="image/*" style="display:none" />
+    </div>
 
-  <div class="heart-bulb" id="heartBulb"></div>
+    <div class="toggle-wrapper">
+      <label for="imgUpload2">
+        <img id="img2" class="profile-pic" src="" alt="" />
+      </label><br />
+      <input type="file" id="imgUpload2" accept="image/*" style="display:none" />
+    </div>
+  </div>
 
   <div class="name-edit">
     <input type="text" id="input1" placeholder="Enter your name" value="Ck" />
     <input type="text" id="input2" placeholder="Enter partner's name" value="Mavi" />
   </div>
 
-  <div class="profile-pictures">
-    <div>
-      <img id="img1" src="" alt="You" />
-      <input type="file" id="file1" accept="image/*" />
+  <div class="toggle-love">
+    <div class="toggle-wrapper">
+      <img id="heartToggle1" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Heart_icon_red_hollow.svg/1024px-Heart_icon_red_hollow.svg.png" class="love-toggle" />
+      <p>Still in love ❤️</p>
     </div>
-    <div>
-      <img id="img2" src="" alt="Partner" />
-      <input type="file" id="file2" accept="image/*" />
+    <div class="toggle-wrapper">
+      <img id="heartToggle2" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Heart_icon_red_hollow.svg/1024px-Heart_icon_red_hollow.svg.png" class="love-toggle" />
+      <p>Still in love ❤️</p>
     </div>
   </div>
 
@@ -203,9 +210,7 @@
       font-size: 1em;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    ">
-      Save Everything ❤️
-    </button>
+    ">Save Everything ❤️</button>
   </div>
 
   <script>
@@ -216,14 +221,12 @@
     const grateful = document.getElementById("grateful");
     const hate = document.getElementById("hate");
     const feeling = document.getElementById("feeling");
-    const file1 = document.getElementById("file1");
-    const file2 = document.getElementById("file2");
     const img1 = document.getElementById("img1");
     const img2 = document.getElementById("img2");
-    const heartBulb = document.getElementById("heartBulb");
-    const loveSwitch = document.getElementById("loveSwitch");
+    const heartToggle1 = document.getElementById("heartToggle1");
+    const heartToggle2 = document.getElementById("heartToggle2");
 
-    function saveToLocalStorage() {
+    function saveAll() {
       localStorage.setItem("name1", input1.value);
       localStorage.setItem("name2", input2.value);
       localStorage.setItem("grateful", grateful.value);
@@ -231,60 +234,58 @@
       localStorage.setItem("feeling", feeling.value);
       localStorage.setItem("img1Data", img1.src);
       localStorage.setItem("img2Data", img2.src);
-      localStorage.setItem("loveState", loveSwitch.checked);
+      localStorage.setItem("love1", heartToggle1.classList.contains("off") ? "0" : "1");
+      localStorage.setItem("love2", heartToggle2.classList.contains("off") ? "0" : "1");
     }
 
+    input1.addEventListener("input", () => { name1.textContent = input1.value || "Ck"; saveAll(); });
+    input2.addEventListener("input", () => { name2.textContent = input2.value || "Mavi"; saveAll(); });
+    grateful.addEventListener("input", saveAll);
+    hate.addEventListener("input", saveAll);
+    feeling.addEventListener("input", saveAll);
+
+    document.getElementById("imgUpload1").addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.onload = () => { img1.src = reader.result; saveAll(); };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    document.getElementById("imgUpload2").addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.onload = () => { img2.src = reader.result; saveAll(); };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    heartToggle1.addEventListener("click", () => {
+      heartToggle1.classList.toggle("off");
+      saveAll();
+    });
+
+    heartToggle2.addEventListener("click", () => {
+      heartToggle2.classList.toggle("off");
+      saveAll();
+    });
+
     document.getElementById("saveBtn").addEventListener("click", () => {
-      saveToLocalStorage();
-      alert("Saved successfully! 💾❤️");
+      saveAll();
+      alert("Saved successfully! 💾");
     });
 
-    [input1, input2, grateful, hate, feeling, loveSwitch].forEach(el => {
-      el.addEventListener("input", saveToLocalStorage);
-      el.addEventListener("change", saveToLocalStorage);
-    });
-
-    file1.addEventListener("change", (e) => {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        img1.src = event.target.result;
-        saveToLocalStorage();
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    });
-
-    file2.addEventListener("change", (e) => {
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        img2.src = event.target.result;
-        saveToLocalStorage();
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    });
-
-    loveSwitch.addEventListener("change", () => {
-      heartBulb.style.opacity = loveSwitch.checked ? "1" : "0.2";
-      heartBulb.style.boxShadow = loveSwitch.checked ? "0 0 20px rgba(255,0,0,0.6)" : "none";
-    });
-
+    // Restore
     window.addEventListener("load", () => {
       input1.value = localStorage.getItem("name1") || "Ck";
       input2.value = localStorage.getItem("name2") || "Mavi";
+      name1.textContent = input1.value;
+      name2.textContent = input2.value;
       grateful.value = localStorage.getItem("grateful") || "";
       hate.value = localStorage.getItem("hate") || "";
       feeling.value = localStorage.getItem("feeling") || "";
       img1.src = localStorage.getItem("img1Data") || "";
       img2.src = localStorage.getItem("img2Data") || "";
-      const loveState = localStorage.getItem("loveState") === "true";
-      loveSwitch.checked = loveState;
-      heartBulb.style.opacity = loveState ? "1" : "0.2";
-      heartBulb.style.boxShadow = loveState ? "0 0 20px rgba(255,0,0,0.6)" : "none";
-      name1.textContent = input1.value;
-      name2.textContent = input2.value;
-    });
 
-    input1.addEventListener("input", () => name1.textContent = input1.value || "Ck");
-    input2.addEventListener("input", () => name2.textContent = input2.value || "Mavi");
+      if (localStorage.getItem("love1") === "0") heartToggle1.classList.add("off");
+      if (localStorage.getItem("love2") === "0") heartToggle2.classList.add("off");
+    });
   </script>
 </body>
 </html>
