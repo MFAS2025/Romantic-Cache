@@ -17,11 +17,26 @@
       min-height: 100vh;
     }
 
+    .logo {
+      font-size: 2.5em;
+      margin-top: 20px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+    }
+
     h1 {
       font-family: 'Pacifico', cursive;
       font-size: 3em;
       color: #d6336c;
-      margin-top: 1em;
+      margin-top: 0.2em;
     }
 
     .heart-bulb {
@@ -29,9 +44,10 @@
       height: 150px;
       background: red;
       position: relative;
-      margin: 40px 0;
+      margin: 20px 0;
       transform: rotate(-45deg);
       box-shadow: 0 0 20px rgba(255,0,0,0.6);
+      transition: opacity 0.3s, box-shadow 0.3s;
     }
 
     .heart-bulb:before,
@@ -54,10 +70,26 @@
       top: 0;
     }
 
+    .love-toggle {
+      margin-bottom: 20px;
+    }
+
+    .love-toggle label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      color: #d6336c;
+    }
+
+    .love-toggle input {
+      transform: scale(1.5);
+    }
+
     .name-edit {
       display: flex;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     .name-edit input {
@@ -66,32 +98,6 @@
       border-radius: 10px;
       border: none;
       box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    .profile-pics {
-      display: flex;
-      gap: 30px;
-      margin-bottom: 20px;
-    }
-
-    .profile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .profile img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid #d6336c;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile input {
-      margin-top: 5px;
-      font-size: 0.9em;
     }
 
     .section {
@@ -110,44 +116,66 @@
 
     textarea {
       width: 100%;
-      min-height: 60px;
-      padding: 10px;
-      font-size: 1em;
+      min-height: 80px;
+      padding: 15px;
+      font-size: 1.05em;
       border-radius: 10px;
       border: 1px solid #ccc;
       resize: vertical;
+      box-sizing: border-box;
+      line-height: 1.6;
+      background-color: #fff;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
     }
 
-    #saveBtn {
-      background-color: #d6336c;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    .profile-pictures {
+      display: flex;
+      gap: 30px;
+      margin: 20px 0;
+    }
+
+    .profile-pictures div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .profile-pictures img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
+  <div class="logo">❤️</div>
   <h1><span id="name1">Ck</span> ❤️ <span id="name2">Mavi</span></h1>
-  <div class="heart-bulb"></div>
 
-  <div class="profile-pics">
-    <div class="profile">
-      <img id="img1" src="https://via.placeholder.com/100" alt="Ck's profile">
-      <input type="file" accept="image/*" onchange="loadImage(event, 'img1', 'img1Data')">
-    </div>
-    <div class="profile">
-      <img id="img2" src="https://via.placeholder.com/100" alt="Mavi's profile">
-      <input type="file" accept="image/*" onchange="loadImage(event, 'img2', 'img2Data')">
-    </div>
+  <div class="love-toggle">
+    <label>
+      <input type="checkbox" id="loveSwitch" checked /> Still in love ❤️
+    </label>
   </div>
+
+  <div class="heart-bulb" id="heartBulb"></div>
 
   <div class="name-edit">
     <input type="text" id="input1" placeholder="Enter your name" value="Ck" />
     <input type="text" id="input2" placeholder="Enter partner's name" value="Mavi" />
+  </div>
+
+  <div class="profile-pictures">
+    <div>
+      <img id="img1" src="" alt="You" />
+      <input type="file" id="file1" accept="image/*" />
+    </div>
+    <div>
+      <img id="img2" src="" alt="Partner" />
+      <input type="file" id="file2" accept="image/*" />
+    </div>
   </div>
 
   <div class="section">
@@ -166,7 +194,18 @@
   </div>
 
   <div class="section" style="text-align: center;">
-    <button id="saveBtn">Save Everything ❤️</button>
+    <button id="saveBtn" style="
+      background-color: #d6336c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+      Save Everything ❤️
+    </button>
   </div>
 
   <script>
@@ -177,77 +216,75 @@
     const grateful = document.getElementById("grateful");
     const hate = document.getElementById("hate");
     const feeling = document.getElementById("feeling");
+    const file1 = document.getElementById("file1");
+    const file2 = document.getElementById("file2");
+    const img1 = document.getElementById("img1");
+    const img2 = document.getElementById("img2");
+    const heartBulb = document.getElementById("heartBulb");
+    const loveSwitch = document.getElementById("loveSwitch");
 
-    function updateAndSaveName(id, value) {
-      document.getElementById(id).textContent = value;
-      localStorage.setItem(id, value);
-    }
-
-    input1.addEventListener("input", () => {
-      updateAndSaveName("name1", input1.value);
-    });
-
-    input2.addEventListener("input", () => {
-      updateAndSaveName("name2", input2.value);
-    });
-
-    grateful.addEventListener("input", () => {
-      localStorage.setItem("grateful", grateful.value);
-    });
-
-    hate.addEventListener("input", () => {
-      localStorage.setItem("hate", hate.value);
-    });
-
-    feeling.addEventListener("input", () => {
-      localStorage.setItem("feeling", feeling.value);
-    });
-
-    document.getElementById("saveBtn").addEventListener("click", () => {
+    function saveToLocalStorage() {
       localStorage.setItem("name1", input1.value);
       localStorage.setItem("name2", input2.value);
       localStorage.setItem("grateful", grateful.value);
       localStorage.setItem("hate", hate.value);
       localStorage.setItem("feeling", feeling.value);
-      localStorage.setItem("img1Data", document.getElementById("img1").src);
-      localStorage.setItem("img2Data", document.getElementById("img2").src);
-      alert("Saved successfully! 💾");
-    });
-
-    function loadImage(event, imgId, storageKey) {
-      const reader = new FileReader();
-      reader.onload = function () {
-        document.getElementById(imgId).src = reader.result;
-        localStorage.setItem(storageKey, reader.result);
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      localStorage.setItem("img1Data", img1.src);
+      localStorage.setItem("img2Data", img2.src);
+      localStorage.setItem("loveState", loveSwitch.checked);
     }
 
-    window.onload = function () {
-      if (localStorage.getItem("name1")) {
-        input1.value = localStorage.getItem("name1");
-        name1.textContent = input1.value;
-      }
-      if (localStorage.getItem("name2")) {
-        input2.value = localStorage.getItem("name2");
-        name2.textContent = input2.value;
-      }
-      if (localStorage.getItem("grateful")) {
-        grateful.value = localStorage.getItem("grateful");
-      }
-      if (localStorage.getItem("hate")) {
-        hate.value = localStorage.getItem("hate");
-      }
-      if (localStorage.getItem("feeling")) {
-        feeling.value = localStorage.getItem("feeling");
-      }
-      if (localStorage.getItem("img1Data")) {
-        document.getElementById("img1").src = localStorage.getItem("img1Data");
-      }
-      if (localStorage.getItem("img2Data")) {
-        document.getElementById("img2").src = localStorage.getItem("img2Data");
-      }
-    };
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      saveToLocalStorage();
+      alert("Saved successfully! 💾❤️");
+    });
+
+    [input1, input2, grateful, hate, feeling, loveSwitch].forEach(el => {
+      el.addEventListener("input", saveToLocalStorage);
+      el.addEventListener("change", saveToLocalStorage);
+    });
+
+    file1.addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        img1.src = event.target.result;
+        saveToLocalStorage();
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    file2.addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        img2.src = event.target.result;
+        saveToLocalStorage();
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    });
+
+    loveSwitch.addEventListener("change", () => {
+      heartBulb.style.opacity = loveSwitch.checked ? "1" : "0.2";
+      heartBulb.style.boxShadow = loveSwitch.checked ? "0 0 20px rgba(255,0,0,0.6)" : "none";
+    });
+
+    window.addEventListener("load", () => {
+      input1.value = localStorage.getItem("name1") || "Ck";
+      input2.value = localStorage.getItem("name2") || "Mavi";
+      grateful.value = localStorage.getItem("grateful") || "";
+      hate.value = localStorage.getItem("hate") || "";
+      feeling.value = localStorage.getItem("feeling") || "";
+      img1.src = localStorage.getItem("img1Data") || "";
+      img2.src = localStorage.getItem("img2Data") || "";
+      const loveState = localStorage.getItem("loveState") === "true";
+      loveSwitch.checked = loveState;
+      heartBulb.style.opacity = loveState ? "1" : "0.2";
+      heartBulb.style.boxShadow = loveState ? "0 0 20px rgba(255,0,0,0.6)" : "none";
+      name1.textContent = input1.value;
+      name2.textContent = input2.value;
+    });
+
+    input1.addEventListener("input", () => name1.textContent = input1.value || "Ck");
+    input2.addEventListener("input", () => name2.textContent = input2.value || "Mavi");
   </script>
 </body>
 </html>
