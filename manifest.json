@@ -1,13 +1,21 @@
 {
   "name": "Romantic Cache",
-  "short_name": "Love App",
-  "start_url": "./",
+  "short_name": "Love 💘",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffdde1",
-  "theme_color": "#d6336c",
-  "icons": [{
-    "src": "https://i.imgur.com/Qp9uLHB.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }]
+  "background_color": "#fff0f3",
+  "theme_color": "#ff6b81",
+  "description": "A heartfelt memory capsule for Ck and Mavi 💖",
+  "icons": [
+    {
+      "src": "https://emojiapi.dev/api/v1/heart/128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "https://emojiapi.dev/api/v1/heart/512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
