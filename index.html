@@ -329,9 +329,17 @@
       name1.textContent = input1.value;
       name2.textContent = input2.value;
     });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(reg => console.log("Service worker registered!", reg))
+      .catch(err => console.error("Service worker failed:", err));
+  });
+}
 
     input1.addEventListener("input", () => name1.textContent = input1.value);
     input2.addEventListener("input", () => name2.textContent = input2.value);
   </script>
+  
 </body>
 </html>
