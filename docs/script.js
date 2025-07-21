@@ -1,18 +1,15 @@
-// Floating hearts animation
+// Floating heart animation using image
 function createHeart() {
-  const heart = document.createElement('div');
+  const heart = document.createElement('img');
+  heart.src = 'heart.png'; // Add heart.png to your docs folder
   heart.classList.add('heart');
-  heart.textContent = '❤️';
   heart.style.left = Math.random() * 100 + 'vw';
-  heart.style.fontSize = (16 + Math.random() * 24) + 'px';
-  heart.style.animationDuration = (4 + Math.random() * 3) + 's';
+  heart.style.animationDuration = (3 + Math.random() * 3) + 's';
   document.getElementById('floatingHearts').appendChild(heart);
 
   setTimeout(() => {
     heart.remove();
-  }, 7000);
+  }, 6000);
 }
 
 setInterval(createHeart, 500);
-
-// You can add more features like dark mode or localStorage if needed
