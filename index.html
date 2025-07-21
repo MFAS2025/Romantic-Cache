@@ -2,150 +2,333 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Romantic Cache 💖</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#ee9ca7" />
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Romantic Cache</title>
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
-    /* Styles are the same as the previous version */
+    :root {
+      --bg-light: #ffdde1;
+      --bg-dark: #2e2e2e;
+      --text-dark: #333;
+      --text-light: #f8f8f8;
+      --accent: #d6336c;
+      --box: #fff;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to top right, #ffdde1, #ee9ca7);
-      color: #333;
+      background: var(--bg-light);
+      color: var(--text-dark);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
+      transition: background 0.5s, color 0.5s;
+      overflow-x: hidden;
     }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    .floating-hearts {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('https://i.imgur.com/Qp9uLHB.png') no-repeat center;
+      background-size: contain;
+      animation: float 6s linear infinite;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
     h1 {
       font-family: 'Pacifico', cursive;
-      font-size: 3em;
-      color: #d6336c;
+      font-size: 2.5em;
+      color: var(--accent);
+      margin: 20px 0;
+      z-index: 1;
     }
-    .logo { font-size: 3em; animation: pulse 1.5s infinite; }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+
+    .name-edit, .love-toggle, .date-section {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+      z-index: 1;
     }
+
+    input[type="text"], input[type="date"] {
+      padding: 8px;
+      font-size: 1em;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .profile-pictures {
+      display: flex;
+      gap: 30px;
+      margin: 10px;
+    }
+
+    .profile-pictures div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .profile-pictures img {
       width: 100px;
       height: 100px;
-      border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      border-radius: 50%;
+      border: 3px solid var(--accent);
     }
-    input, textarea {
-      font-size: 1em;
-      margin: 5px;
-    }
+
     .section {
-      background: white;
+      background: var(--box);
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       padding: 20px;
-      border-radius: 10px;
       margin: 10px;
-      max-width: 600px;
       width: 90%;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      z-index: 1;
     }
-    .floating-hearts { position: fixed; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-    .heart {
-      position: absolute;
-      color: rgba(255, 105, 180, 0.5);
-      font-size: 24px;
-      animation: float 6s linear infinite;
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 10px;
+      resize: vertical;
     }
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(1); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+
+    button {
+      background: var(--accent);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #hateSection {
+      display: none;
+    }
+
+    .timeline {
+      margin: 20px;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .toggle-dark {
+      position: fixed;
+      top: 10px;
+      right: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="floating-hearts" id="heartsContainer"></div>
-  <div class="logo">💖</div>
-  <h1><span id="name1">Ck</span> 💗 <span id="name2">Mavi</span></h1>
-  <input type="text" id="input1" value="Ck" />
-  <input type="text" id="input2" value="Mavi" />
-  <input type="file" id="file1" accept="image/*" />
-  <input type="file" id="file2" accept="image/*" />
-  <img id="img1" width="100" height="100" />
-  <img id="img2" width="100" height="100" />
-  <div>
+  <div class="floating-hearts" id="heartContainer"></div>
+
+  <div class="toggle-dark">
+    <label>
+      <input type="checkbox" id="darkToggle" /> 🌙 Dark Mode
+    </label>
+  </div>
+
+  <h1><span id="name1Label">Ck</span> 💗 <span id="name2Label">Mavi</span></h1>
+
+  <div class="profile-pictures">
+    <div>
+      <img id="img1" src="" alt="You" />
+      <input type="file" id="file1" accept="image/*">
+    </div>
+    <div>
+      <img id="img2" src="" alt="Partner" />
+      <input type="file" id="file2" accept="image/*">
+    </div>
+  </div>
+
+  <div class="name-edit">
+    <input id="name1" value="Ck" />
+    <input id="name2" value="Mavi" />
+  </div>
+
+  <div class="love-toggle">
     <label><input type="checkbox" id="love1" checked /> Still in love 💘</label>
     <label><input type="checkbox" id="love2" checked /> Still in love 💘</label>
   </div>
-  <div>
-    <label>Anniversary: <input type="date" id="anniv" /></label>
-    <div id="annivCounter"></div>
+
+  <div class="date-section">
+    Anniversary: <input type="date" id="annivDate" />
+    <span id="annivCount"></span>
   </div>
-  <div class="section"><h2>What I'm Grateful For</h2><textarea id="grateful"></textarea></div>
-  <div class="section"><h2>What I Hate</h2><textarea id="hate"></textarea></div>
-  <div class="section"><h2>How I'm Feeling</h2><textarea id="feeling"></textarea></div>
-  <button onclick="save()">Save 💾</button>
-  <div id="timeline"></div>
-  <audio controls loop src="https://dl.dropboxusercontent.com/s/3cb7qp9fdh9yfqu/Lover.mp3"></audio>
+
+  <div class="section">
+    <h3>What I'm Grateful For</h3>
+    <textarea id="grateful"></textarea>
+  </div>
+
+  <div class="section">
+    <h3>How I'm Feeling</h3>
+    <textarea id="feeling"></textarea>
+  </div>
+
+  <div class="section">
+    <button onclick="toggleHate()">Show What I Hate 💢</button>
+    <div id="hateSection">
+      <h3>What I Hate</h3>
+      <textarea id="hate"></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <button onclick="saveAll()">💾 Save</button>
+  </div>
+
+  <div class="section timeline">
+    <h3>📜 Memory Timeline</h3>
+    <div id="timelineLog"></div>
+  </div>
+
+  <audio controls>
+    <source src="https://dl.dropboxusercontent.com/scl/fi/w7gxr5ipnrfj5yogx41rc/lover.mp3?rlkey=4vnze2jcc54bpz8f4rxy7ez6r&dl=0" type="audio/mp3">
+  </audio>
+
   <script>
     const name1 = document.getElementById("name1");
     const name2 = document.getElementById("name2");
-    const input1 = document.getElementById("input1");
-    const input2 = document.getElementById("input2");
-    const anniv = document.getElementById("anniv");
-    const annivCounter = document.getElementById("annivCounter");
-    const timeline = document.getElementById("timeline");
-    function save() {
+    const name1Label = document.getElementById("name1Label");
+    const name2Label = document.getElementById("name2Label");
+    const grateful = document.getElementById("grateful");
+    const hate = document.getElementById("hate");
+    const feeling = document.getElementById("feeling");
+    const love1 = document.getElementById("love1");
+    const love2 = document.getElementById("love2");
+    const annivDate = document.getElementById("annivDate");
+    const annivCount = document.getElementById("annivCount");
+    const file1 = document.getElementById("file1");
+    const file2 = document.getElementById("file2");
+    const img1 = document.getElementById("img1");
+    const img2 = document.getElementById("img2");
+    const timelineLog = document.getElementById("timelineLog");
+    const darkToggle = document.getElementById("darkToggle");
+
+    function saveAll() {
       const data = {
-        name1: input1.value,
-        name2: input2.value,
-        grateful: document.getElementById("grateful").value,
-        hate: document.getElementById("hate").value,
-        feeling: document.getElementById("feeling").value,
-        date: anniv.value,
-        love1: document.getElementById("love1").checked,
-        love2: document.getElementById("love2").checked,
-        timestamp: new Date().toISOString()
+        name1: name1.value,
+        name2: name2.value,
+        grateful: grateful.value,
+        hate: hate.value,
+        feeling: feeling.value,
+        love1: love1.checked,
+        love2: love2.checked,
+        anniv: annivDate.value,
+        img1: img1.src,
+        img2: img2.src,
       };
       localStorage.setItem("romanticData", JSON.stringify(data));
-      let h = JSON.parse(localStorage.getItem("romanticTimeline") || "[]");
-      h.push(data); localStorage.setItem("romanticTimeline", JSON.stringify(h.slice(-5)));
-      alert("Saved 💾");
-      showTimeline();
+
+      const time = new Date().toISOString().split("T")[0];
+      const entry = `${time}: "Grateful: ${grateful.value}", "Feeling: ${feeling.value}"`;
+      const history = JSON.parse(localStorage.getItem("memoryTimeline") || "[]");
+      history.push(entry);
+      localStorage.setItem("memoryTimeline", JSON.stringify(history));
+      renderTimeline();
     }
-    function showTimeline() {
-      const h = JSON.parse(localStorage.getItem("romanticTimeline") || "[]");
-      timeline.innerHTML = "<h3>🕰 Memory Timeline</h3>" + h.reverse().map(e => `<div><em>${e.timestamp.split("T")[0]}</em>: "${e.feeling}"</div>`).join("");
+
+    function renderTimeline() {
+      const history = JSON.parse(localStorage.getItem("memoryTimeline") || "[]");
+      timelineLog.innerHTML = history.map(e => `<div>🕰 ${e}</div>`).join("");
     }
-    function update() {
-      const data = JSON.parse(localStorage.getItem("romanticData"));
+
+    function toggleHate() {
+      const el = document.getElementById("hateSection");
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+
+    function load() {
+      const data = JSON.parse(localStorage.getItem("romanticData") || "{}");
       if (!data) return;
-      input1.value = data.name1;
-      input2.value = data.name2;
-      name1.textContent = data.name1;
-      name2.textContent = data.name2;
-      anniv.value = data.date;
-      const d1 = new Date(data.date);
-      const d2 = new Date();
-      const days = Math.floor((d2 - d1) / (1000*60*60*24));
-      annivCounter.innerText = `❤️ Together for ${days} days`;
+      name1.value = data.name1 || "Ck";
+      name2.value = data.name2 || "Mavi";
+      name1Label.textContent = name1.value;
+      name2Label.textContent = name2.value;
+      grateful.value = data.grateful || "";
+      hate.value = data.hate || "";
+      feeling.value = data.feeling || "";
+      love1.checked = data.love1 ?? true;
+      love2.checked = data.love2 ?? true;
+      annivDate.value = data.anniv || "";
+      img1.src = data.img1 || "";
+      img2.src = data.img2 || "";
+      updateAnniv();
+      renderTimeline();
     }
-    function floatHeart() {
-      const h = document.createElement("div");
-      h.className = "heart";
-      h.style.left = Math.random() * 100 + "vw";
-      h.style.animationDuration = (3 + Math.random() * 3) + "s";
-      h.textContent = "💖";
-      document.getElementById("heartsContainer").appendChild(h);
-      setTimeout(() => h.remove(), 8000);
+
+    function updateAnniv() {
+      const date = new Date(annivDate.value);
+      if (!isNaN(date)) {
+        const now = new Date();
+        const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+        annivCount.textContent = `💞 Day ${diff} of love`;
+      }
     }
-    setInterval(floatHeart, 800);
-    window.onload = () => { update(); showTimeline(); };
-  </script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
+
+    name1.addEventListener("input", () => name1Label.textContent = name1.value);
+    name2.addEventListener("input", () => name2Label.textContent = name2.value);
+    annivDate.addEventListener("input", updateAnniv);
+    darkToggle.addEventListener("change", () => {
+      document.body.classList.toggle("dark", darkToggle.checked);
+    });
+
+    [file1, file2].forEach((input, idx) => {
+      input.addEventListener("change", e => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+          const img = idx === 0 ? img1 : img2;
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      });
+    });
+
+    function spawnHearts() {
+      const container = document.getElementById("heartContainer");
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 5 + 5) + "s";
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 12000);
+      }
     }
+
+    setInterval(spawnHearts, 3000);
+    window.addEventListener("load", load);
   </script>
 </body>
 </html>
