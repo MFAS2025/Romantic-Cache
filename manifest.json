@@ -1,0 +1,13 @@
+{
+  "name": "Romantic Cache",
+  "short_name": "LoveApp",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ee9ca7",
+  "theme_color": "#ee9ca7",
+  "icons": [{
+    "src": "https://emojiapi.dev/api/v1/heart/512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }]
+}
