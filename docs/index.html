@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Romantic Cache</title>
-  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#d6336c" />
 </head>
@@ -62,7 +61,7 @@
       <div class="section">
         <h2>🎶 Our Love Song</h2>
         <audio id="loveAudio" controls>
-          <source src="https://cdn.pixabay.com/download/audio/2023/03/22/audio_69e4f1e531.mp3?filename=romantic-piano-melody-141138.mp3" type="audio/mp3">
+          <source src="Lover.mp3" type="audio/mpeg">
         </audio>
       </div>
     </main>
@@ -71,13 +70,11 @@
   <!-- Background Music: Lover.mp3 -->
   <audio id="bgMusic" loop>
     <source src="Lover.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>
 
-  <!-- Scripts -->
   <script src="script.js"></script>
   <script>
-    // Play Lover.mp3 after first interaction
+    // Autoplay after user interacts
     const bgMusic = document.getElementById('bgMusic');
     function playMusicOnce() {
       bgMusic.play().catch(err => console.warn('Autoplay blocked:', err));
