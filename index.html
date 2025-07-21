@@ -4,331 +4,340 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Romantic Cache</title>
-  <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-light: #ffdde1;
-      --bg-dark: #2e2e2e;
-      --text-dark: #333;
-      --text-light: #f8f8f8;
-      --accent: #d6336c;
-      --box: #fff;
-    }
-
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: var(--bg-light);
-      color: var(--text-dark);
+      background: linear-gradient(to top right, #ffdde1, #ee9ca7);
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      transition: background 0.5s, color 0.5s;
+      position: relative;
       overflow-x: hidden;
-    }
-
-    body.dark {
-      background: var(--bg-dark);
-      color: var(--text-light);
     }
 
     .floating-hearts {
       position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
+      overflow: hidden;
       z-index: 0;
     }
 
     .heart {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background: url('https://i.imgur.com/Qp9uLHB.png') no-repeat center;
-      background-size: contain;
-      animation: float 6s linear infinite;
+      font-size: 24px;
+      color: #ff6b81;
+      animation: floatUp linear infinite;
     }
 
-    @keyframes float {
+    @keyframes floatUp {
       0% {
-        transform: translateY(100vh) scale(1);
+        transform: translateY(100vh) scale(0.5);
         opacity: 1;
       }
       100% {
-        transform: translateY(-100vh) scale(1.5);
+        transform: translateY(-20vh) scale(1.2);
         opacity: 0;
+      }
+    }
+
+    .logo {
+      font-size: 2.5em;
+      margin-top: 20px;
+      animation: pulse 1.5s infinite;
+      z-index: 2;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
       }
     }
 
     h1 {
       font-family: 'Pacifico', cursive;
-      font-size: 2.5em;
-      color: var(--accent);
-      margin: 20px 0;
-      z-index: 1;
+      font-size: 3em;
+      color: #d6336c;
+      margin: 0.2em;
+      z-index: 2;
     }
 
-    .name-edit, .love-toggle, .date-section {
+    .name-edit, .profile-pictures {
       display: flex;
       gap: 10px;
-      margin: 10px 0;
-      z-index: 1;
+      margin-bottom: 10px;
+      z-index: 2;
     }
 
-    input[type="text"], input[type="date"] {
-      padding: 8px;
+    .name-edit input {
       font-size: 1em;
+      padding: 8px;
       border-radius: 10px;
-      border: 1px solid #ccc;
-    }
-
-    .profile-pictures {
-      display: flex;
-      gap: 30px;
-      margin: 10px;
-    }
-
-    .profile-pictures div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      border: none;
     }
 
     .profile-pictures img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .heart-bulb {
       width: 100px;
       height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid var(--accent);
+      background: red;
+      position: relative;
+      transform: rotate(-45deg);
+      border-radius: 50% 50% 0 0;
+      margin: 10px;
+      box-shadow: 0 0 0 transparent;
+      opacity: 0.2;
+      transition: 0.3s ease;
     }
 
     .section {
-      background: var(--box);
-      border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      background: white;
       padding: 20px;
       margin: 10px;
+      border-radius: 20px;
       width: 90%;
       max-width: 600px;
-      z-index: 1;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      z-index: 2;
     }
 
     textarea {
       width: 100%;
-      padding: 10px;
+      min-height: 60px;
       font-size: 1em;
+      padding: 10px;
       border-radius: 10px;
-      resize: vertical;
-    }
-
-    button {
-      background: var(--accent);
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    #hateSection {
-      display: none;
     }
 
     .timeline {
-      margin: 20px;
       width: 90%;
       max-width: 600px;
+      background: white;
+      border-radius: 10px;
+      margin: 20px;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      z-index: 2;
     }
 
-    .toggle-dark {
-      position: fixed;
-      top: 10px;
-      right: 10px;
+    .dark-mode {
+      background: #222;
+      color: #f2f2f2;
+    }
+
+    .dark-mode .section, .dark-mode .timeline {
+      background: #333;
+      color: #fff;
+    }
+
+    #music {
+      margin-top: 10px;
+      z-index: 2;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="floating-hearts" id="heartContainer"></div>
-
-  <div class="toggle-dark">
-    <label>
-      <input type="checkbox" id="darkToggle" /> 🌙 Dark Mode
-    </label>
-  </div>
-
-  <h1><span id="name1Label">Ck</span> 💗 <span id="name2Label">Mavi</span></h1>
+  <div class="floating-hearts" id="floatingHearts"></div>
+  <div class="logo">❤️</div>
+  <h1><span id="name1">Ck</span> 💖 <span id="name2">Mavi</span></h1>
 
   <div class="profile-pictures">
     <div>
-      <img id="img1" src="" alt="You" />
-      <input type="file" id="file1" accept="image/*">
+      <input type="file" id="file1" accept="image/*" />
+      <img id="img1" src="" alt="Profile 1" />
     </div>
     <div>
-      <img id="img2" src="" alt="Partner" />
-      <input type="file" id="file2" accept="image/*">
+      <input type="file" id="file2" accept="image/*" />
+      <img id="img2" src="" alt="Profile 2" />
     </div>
   </div>
 
   <div class="name-edit">
-    <input id="name1" value="Ck" />
-    <input id="name2" value="Mavi" />
+    <input type="text" id="input1" placeholder="Your name" value="Ck"/>
+    <input type="text" id="input2" placeholder="Partner's name" value="Mavi"/>
   </div>
 
-  <div class="love-toggle">
-    <label><input type="checkbox" id="love1" checked /> Still in love 💘</label>
-    <label><input type="checkbox" id="love2" checked /> Still in love 💘</label>
+  <div>
+    <label><input type="checkbox" id="love1" /> Still in love 💘</label>
+    <label><input type="checkbox" id="love2" /> Still in love 💘</label>
   </div>
 
-  <div class="date-section">
-    Anniversary: <input type="date" id="annivDate" />
-    <span id="annivCount"></span>
+  <div class="heart-bulb" id="heartBulb"></div>
+
+  <div>
+    Anniversary: <input type="date" id="anniversary" />
+    <span id="daysTogether"></span>
   </div>
 
   <div class="section">
-    <h3>What I'm Grateful For</h3>
+    <h2>What I'm Grateful For</h2>
     <textarea id="grateful"></textarea>
   </div>
 
+  <div class="section hidden" id="hateSection">
+    <h2>What I Hate</h2>
+    <textarea id="hate"></textarea>
+  </div>
+  <button onclick="document.getElementById('hateSection').classList.toggle('hidden')">👀 Show/Hide Hate</button>
+
   <div class="section">
-    <h3>How I'm Feeling</h3>
+    <h2>How I'm Feeling</h2>
     <textarea id="feeling"></textarea>
   </div>
 
-  <div class="section">
-    <button onclick="toggleHate()">Show What I Hate 💢</button>
-    <div id="hateSection">
-      <h3>What I Hate</h3>
-      <textarea id="hate"></textarea>
-    </div>
-  </div>
+  <button onclick="saveEverything()">💾 Save 💖</button>
 
   <div class="section">
-    <button onclick="saveAll()">💾 Save</button>
+    <label><input type="checkbox" id="darkToggle"> 🌙 Dark Mode</label>
   </div>
 
-  <div class="section timeline">
-    <h3>📜 Memory Timeline</h3>
-    <div id="timelineLog"></div>
+  <div class="timeline">
+    <h3>🕰 Memory Timeline</h3>
+    <div id="memoryLog"></div>
   </div>
 
-  <audio controls>
-    <source src="https://dl.dropboxusercontent.com/scl/fi/w7gxr5ipnrfj5yogx41rc/lover.mp3?rlkey=4vnze2jcc54bpz8f4rxy7ez6r&dl=0" type="audio/mp3">
+  <audio id="music" controls loop>
+    <source src="https://upload.wikimedia.org/wikipedia/en/7/7e/Taylor_Swift_-_Lover.ogg" type="audio/ogg" />
+    Your browser does not support audio.
   </audio>
 
   <script>
     const name1 = document.getElementById("name1");
     const name2 = document.getElementById("name2");
-    const name1Label = document.getElementById("name1Label");
-    const name2Label = document.getElementById("name2Label");
+    const input1 = document.getElementById("input1");
+    const input2 = document.getElementById("input2");
     const grateful = document.getElementById("grateful");
     const hate = document.getElementById("hate");
     const feeling = document.getElementById("feeling");
-    const love1 = document.getElementById("love1");
-    const love2 = document.getElementById("love2");
-    const annivDate = document.getElementById("annivDate");
-    const annivCount = document.getElementById("annivCount");
     const file1 = document.getElementById("file1");
     const file2 = document.getElementById("file2");
     const img1 = document.getElementById("img1");
     const img2 = document.getElementById("img2");
-    const timelineLog = document.getElementById("timelineLog");
+    const love1 = document.getElementById("love1");
+    const love2 = document.getElementById("love2");
+    const heartBulb = document.getElementById("heartBulb");
+    const memoryLog = document.getElementById("memoryLog");
+    const anniversary = document.getElementById("anniversary");
+    const daysTogether = document.getElementById("daysTogether");
     const darkToggle = document.getElementById("darkToggle");
 
-    function saveAll() {
-      const data = {
-        name1: name1.value,
-        name2: name2.value,
-        grateful: grateful.value,
-        hate: hate.value,
-        feeling: feeling.value,
-        love1: love1.checked,
-        love2: love2.checked,
-        anniv: annivDate.value,
-        img1: img1.src,
-        img2: img2.src,
-      };
-      localStorage.setItem("romanticData", JSON.stringify(data));
-
-      const time = new Date().toISOString().split("T")[0];
-      const entry = `${time}: "Grateful: ${grateful.value}", "Feeling: ${feeling.value}"`;
-      const history = JSON.parse(localStorage.getItem("memoryTimeline") || "[]");
-      history.push(entry);
-      localStorage.setItem("memoryTimeline", JSON.stringify(history));
-      renderTimeline();
+    function saveEverything() {
+      localStorage.setItem("name1", input1.value);
+      localStorage.setItem("name2", input2.value);
+      localStorage.setItem("grateful", grateful.value);
+      localStorage.setItem("hate", hate.value);
+      localStorage.setItem("feeling", feeling.value);
+      localStorage.setItem("img1", img1.src);
+      localStorage.setItem("img2", img2.src);
+      localStorage.setItem("love1", love1.checked);
+      localStorage.setItem("love2", love2.checked);
+      localStorage.setItem("anniversary", anniversary.value);
+      const log = `${new Date().toISOString().split("T")[0]}: "${grateful.value}" 💌 "${feeling.value}"`;
+      let logs = JSON.parse(localStorage.getItem("memories") || "[]");
+      logs.push(log);
+      localStorage.setItem("memories", JSON.stringify(logs));
+      updateMemory();
+      updateHeart();
     }
 
-    function renderTimeline() {
-      const history = JSON.parse(localStorage.getItem("memoryTimeline") || "[]");
-      timelineLog.innerHTML = history.map(e => `<div>🕰 ${e}</div>`).join("");
+    function updateHeart() {
+      heartBulb.style.opacity = (love1.checked && love2.checked) ? "1" : "0.2";
+      heartBulb.style.boxShadow = (love1.checked && love2.checked) ? "0 0 20px red" : "none";
     }
 
-    function toggleHate() {
-      const el = document.getElementById("hateSection");
-      el.style.display = el.style.display === "none" ? "block" : "none";
+    function updateMemory() {
+      const logs = JSON.parse(localStorage.getItem("memories") || "[]");
+      memoryLog.innerHTML = logs.map(log => `<div>${log}</div>`).join("");
     }
 
     function load() {
-      const data = JSON.parse(localStorage.getItem("romanticData") || "{}");
-      if (!data) return;
-      name1.value = data.name1 || "Ck";
-      name2.value = data.name2 || "Mavi";
-      name1Label.textContent = name1.value;
-      name2Label.textContent = name2.value;
-      grateful.value = data.grateful || "";
-      hate.value = data.hate || "";
-      feeling.value = data.feeling || "";
-      love1.checked = data.love1 ?? true;
-      love2.checked = data.love2 ?? true;
-      annivDate.value = data.anniv || "";
-      img1.src = data.img1 || "";
-      img2.src = data.img2 || "";
-      updateAnniv();
-      renderTimeline();
+      input1.value = localStorage.getItem("name1") || "Ck";
+      input2.value = localStorage.getItem("name2") || "Mavi";
+      grateful.value = localStorage.getItem("grateful") || "";
+      hate.value = localStorage.getItem("hate") || "";
+      feeling.value = localStorage.getItem("feeling") || "";
+      img1.src = localStorage.getItem("img1") || "";
+      img2.src = localStorage.getItem("img2") || "";
+      love1.checked = localStorage.getItem("love1") === "true";
+      love2.checked = localStorage.getItem("love2") === "true";
+      anniversary.value = localStorage.getItem("anniversary") || "";
+      darkToggle.checked = document.body.classList.contains("dark-mode");
+      updateHeart();
+      updateMemory();
+      name1.textContent = input1.value;
+      name2.textContent = input2.value;
+      updateAnniversaryCounter();
     }
 
-    function updateAnniv() {
-      const date = new Date(annivDate.value);
-      if (!isNaN(date)) {
-        const now = new Date();
-        const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-        annivCount.textContent = `💞 Day ${diff} of love`;
-      }
+    function updateAnniversaryCounter() {
+      const date = new Date(anniversary.value);
+      if (isNaN(date)) return;
+      const now = new Date();
+      const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+      daysTogether.textContent = `💘 ${diff} days together`;
     }
 
-    name1.addEventListener("input", () => name1Label.textContent = name1.value);
-    name2.addEventListener("input", () => name2Label.textContent = name2.value);
-    annivDate.addEventListener("input", updateAnniv);
-    darkToggle.addEventListener("change", () => {
-      document.body.classList.toggle("dark", darkToggle.checked);
-    });
+    file1.onchange = e => {
+      const r = new FileReader();
+      r.onload = ev => {
+        img1.src = ev.target.result;
+        localStorage.setItem("img1", ev.target.result);
+      };
+      r.readAsDataURL(e.target.files[0]);
+    };
 
-    [file1, file2].forEach((input, idx) => {
-      input.addEventListener("change", e => {
-        const reader = new FileReader();
-        reader.onload = ev => {
-          const img = idx === 0 ? img1 : img2;
-          img.src = ev.target.result;
-        };
-        reader.readAsDataURL(e.target.files[0]);
-      });
-    });
+    file2.onchange = e => {
+      const r = new FileReader();
+      r.onload = ev => {
+        img2.src = ev.target.result;
+        localStorage.setItem("img2", ev.target.result);
+      };
+      r.readAsDataURL(e.target.files[0]);
+    };
 
-    function spawnHearts() {
-      const container = document.getElementById("heartContainer");
-      for (let i = 0; i < 15; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (Math.random() * 5 + 5) + "s";
-        container.appendChild(heart);
-        setTimeout(() => heart.remove(), 12000);
-      }
-    }
+    input1.oninput = () => name1.textContent = input1.value;
+    input2.oninput = () => name2.textContent = input2.value;
+    love1.onchange = love2.onchange = updateHeart;
+    anniversary.onchange = () => {
+      localStorage.setItem("anniversary", anniversary.value);
+      updateAnniversaryCounter();
+    };
 
-    setInterval(spawnHearts, 3000);
-    window.addEventListener("load", load);
+    darkToggle.onchange = () => {
+      document.body.classList.toggle("dark-mode");
+    };
+
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+      heart.innerHTML = "💖";
+      document.getElementById("floatingHearts").appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }, 500);
+
+    window.onload = load;
   </script>
 </body>
 </html>
