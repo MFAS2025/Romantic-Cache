@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MFAS BALIK ALINDOG PROGRAM (BAP)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0c3c78;
+    }
+
+    .pot-money {
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .leaderboard {
+      max-width: 700px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .leaderboard th, .leaderboard td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .leaderboard th {
+      background-color: #004aad;
+      color: white;
+    }
+
+    .leaderboard tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .highlight {
+      background-color: gold;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏋️ MFAS BALIK ALINDOG PROGRAM (BAP) 🏋️</h1>
+  <div class="pot-money">💰 Current Pot Money: <span id="pot">₱9,290</span></div>
+
+  <table class="leaderboard" id="leaderboard">
+    <thead>
+      <tr>
+        <th>🏅 Rank</th>
+        <th>Participant #</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Will be filled by JS -->
+    </tbody>
+  </table>
+
+  <footer>Keep pushing! 💪 The road to fitness is a journey, and you're all winners!</footer>
+
+  <script>
+    const participants = [
+      { number: 1, points: 22.73333333 },
+      { number: 2, points: 23 },
+      { number: 3, points: 24 },
+      { number: 4, points: 30 },
+      { number: 5, points: 23 },
+      { number: 6, points: 24 },
+      { number: 7, points: 30 },
+      { number: 8, points: 23 },
+      { number: 9, points: 23 },
+      { number: 10, points: 23 },
+      { number: 11, points: 23 },
+      { number: 12, points: 23 },
+      { number: 13, points: 23 },
+      { number: 14, points: 23 },
+      { number: 15, points: 23 },
+      { number: 16, points: 23 },
+      { number: 17, points: 23 },
+      { number: 18, points: 23 },
+      { number: 19, points: 23 },
+      { number: 20, points: 23 },
+      { number: 21, points: 30 },
+      { number: 22, points: 50 },
+      { number: 23, points: 50 },
+      { number: 24, points: 50 },
+      { number: 25, points: 40 },
+      { number: 26, points: 40 },
+      { number: 27, points: 30 }
+    ];
+
+    const sorted = participants.sort((a, b) => b.points - a.points);
+    const tbody = document.querySelector('#leaderboard tbody');
+
+    sorted.forEach((p, index) => {
+      const tr = document.createElement('tr');
+      if (index === 0) tr.classList.add('highlight');
+
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${p.number}</td>
+        <td>${p.points}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  </script>
+
+</body>
+</html>
