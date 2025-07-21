@@ -1,131 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MFAS BALIK ALINDOG PROGRAM (BAP)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Romantic Cache</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f8ff;
       margin: 0;
-      padding: 20px;
-      color: #333;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to top right, #ffdde1, #ee9ca7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
 
     h1 {
-      text-align: center;
-      color: #0c3c78;
+      font-family: 'Pacifico', cursive;
+      font-size: 3em;
+      color: #d6336c;
+      margin-top: 1em;
     }
 
-    .pot-money {
-      text-align: center;
-      font-size: 2em;
-      font-weight: bold;
+    .heart-bulb {
+      width: 150px;
+      height: 150px;
+      background: red;
+      position: relative;
+      margin: 40px 0;
+      transform: rotate(-45deg);
+      box-shadow: 0 0 20px rgba(255,0,0,0.6);
+    }
+
+    .heart-bulb:before,
+    .heart-bulb:after {
+      content: "";
+      width: 150px;
+      height: 150px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart-bulb:before {
+      top: -75px;
+      left: 0;
+    }
+
+    .heart-bulb:after {
+      left: 75px;
+      top: 0;
+    }
+
+    .name-edit {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .name-edit input {
+      font-size: 1.2em;
+      padding: 8px;
+      border-radius: 10px;
+      border: none;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .profile-pics {
+      display: flex;
+      gap: 30px;
       margin-bottom: 20px;
     }
 
-    .leaderboard {
-      max-width: 700px;
-      margin: 0 auto;
-      border-collapse: collapse;
-      width: 100%;
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .leaderboard th, .leaderboard td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: center;
+    .profile img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #d6336c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .leaderboard th {
-      background-color: #004aad;
-      color: white;
-    }
-
-    .leaderboard tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-    .highlight {
-      background-color: gold;
-      font-weight: bold;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
+    .profile input {
+      margin-top: 5px;
       font-size: 0.9em;
-      color: #777;
+    }
+
+    .section {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin: 10px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .section h2 {
+      color: #d6336c;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      resize: vertical;
     }
   </style>
 </head>
 <body>
+  <h1><span id="name1">Ck</span> ❤️ <span id="name2">Mavi</span></h1>
+  <div class="heart-bulb"></div>
 
-  <h1>🏋️ MFAS BALIK ALINDOG PROGRAM (BAP) 🏋️</h1>
-  <div class="pot-money">💰 Current Pot Money: <span id="pot">₱9,290</span></div>
+  <div class="profile-pics">
+    <div class="profile">
+      <img id="img1" src="https://via.placeholder.com/100" alt="Ck's profile">
+      <input type="file" accept="image/*" onchange="loadImage(event, 'img1')">
+    </div>
+    <div class="profile">
+      <img id="img2" src="https://via.placeholder.com/100" alt="Mavi's profile">
+      <input type="file" accept="image/*" onchange="loadImage(event, 'img2')">
+    </div>
+  </div>
 
-  <table class="leaderboard" id="leaderboard">
-    <thead>
-      <tr>
-        <th>🏅 Rank</th>
-        <th>Participant #</th>
-        <th>Points</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Will be filled by JS -->
-    </tbody>
-  </table>
+  <div class="name-edit">
+    <input type="text" id="input1" placeholder="Enter your name" value="Ck" />
+    <input type="text" id="input2" placeholder="Enter partner's name" value="Mavi" />
+  </div>
 
-  <footer>Keep pushing! 💪 The road to fitness is a journey, and you're all winners!</footer>
+  <div class="section">
+    <h2>What I'm Grateful For</h2>
+    <textarea placeholder="E.g., your smile, your patience, our memories..."></textarea>
+  </div>
+
+  <div class="section">
+    <h2>What I Hate (but love you anyway)</h2>
+    <textarea placeholder="Be honest but kind..."></textarea>
+  </div>
+
+  <div class="section">
+    <h2>How I'm Feeling Right Now</h2>
+    <textarea placeholder="Share your feelings openly..."></textarea>
+  </div>
 
   <script>
-    const participants = [
-      { number: 1, points: 22.73333333 },
-      { number: 2, points: 23 },
-      { number: 3, points: 24 },
-      { number: 4, points: 30 },
-      { number: 5, points: 23 },
-      { number: 6, points: 24 },
-      { number: 7, points: 30 },
-      { number: 8, points: 23 },
-      { number: 9, points: 23 },
-      { number: 10, points: 23 },
-      { number: 11, points: 23 },
-      { number: 12, points: 23 },
-      { number: 13, points: 23 },
-      { number: 14, points: 23 },
-      { number: 15, points: 23 },
-      { number: 16, points: 23 },
-      { number: 17, points: 23 },
-      { number: 18, points: 23 },
-      { number: 19, points: 23 },
-      { number: 20, points: 23 },
-      { number: 21, points: 30 },
-      { number: 22, points: 50 },
-      { number: 23, points: 50 },
-      { number: 24, points: 50 },
-      { number: 25, points: 40 },
-      { number: 26, points: 40 },
-      { number: 27, points: 30 }
-    ];
+    const input1 = document.getElementById("input1");
+    const input2 = document.getElementById("input2");
+    const name1 = document.getElementById("name1");
+    const name2 = document.getElementById("name2");
 
-    const sorted = participants.sort((a, b) => b.points - a.points);
-    const tbody = document.querySelector('#leaderboard tbody');
-
-    sorted.forEach((p, index) => {
-      const tr = document.createElement('tr');
-      if (index === 0) tr.classList.add('highlight');
-
-      tr.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${p.number}</td>
-        <td>${p.points}</td>
-      `;
-      tbody.appendChild(tr);
+    input1.addEventListener("input", () => {
+      name1.textContent = input1.value || "Ck";
     });
-  </script>
 
+    input2.addEventListener("input", () => {
+      name2.textContent = input2.value || "Mavi";
+    });
+
+    function loadImage(event, imgId) {
+      const image = document.getElementById(imgId);
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+  </script>
 </body>
 </html>
