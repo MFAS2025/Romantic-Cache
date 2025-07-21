@@ -68,24 +68,22 @@
     </main>
   </div>
 
-  <!-- Background Music: Lover.mp3 (initially paused) -->
+  <!-- Background Music: Lover.mp3 -->
   <audio id="bgMusic" loop>
     <source src="Lover.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <!-- JavaScript Files -->
+  <!-- Scripts -->
   <script src="script.js"></script>
   <script>
-    // Play Lover.mp3 after first user interaction
+    // Play Lover.mp3 after first interaction
     const bgMusic = document.getElementById('bgMusic');
-
     function playMusicOnce() {
       bgMusic.play().catch(err => console.warn('Autoplay blocked:', err));
       document.removeEventListener('click', playMusicOnce);
       document.removeEventListener('keydown', playMusicOnce);
     }
-
     document.addEventListener('click', playMusicOnce);
     document.addEventListener('keydown', playMusicOnce);
   </script>
