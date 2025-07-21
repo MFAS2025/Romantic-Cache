@@ -118,16 +118,15 @@
       resize: vertical;
     }
 
-    button.save-btn {
-      margin: 20px;
-      padding: 10px 20px;
-      font-size: 1em;
+    #saveBtn {
       background-color: #d6336c;
       color: white;
+      padding: 10px 20px;
       border: none;
       border-radius: 10px;
+      font-size: 1em;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -138,11 +137,11 @@
   <div class="profile-pics">
     <div class="profile">
       <img id="img1" src="https://via.placeholder.com/100" alt="Ck's profile">
-      <input type="file" accept="image/*" onchange="loadImage(event, 'img1')">
+      <input type="file" accept="image/*" onchange="loadImage(event, 'img1', 'img1Data')">
     </div>
     <div class="profile">
       <img id="img2" src="https://via.placeholder.com/100" alt="Mavi's profile">
-      <input type="file" accept="image/*" onchange="loadImage(event, 'img2')">
+      <input type="file" accept="image/*" onchange="loadImage(event, 'img2', 'img2Data')">
     </div>
   </div>
 
@@ -166,7 +165,9 @@
     <textarea id="feeling" placeholder="Share your feelings openly..."></textarea>
   </div>
 
-  <button class="save-btn" onclick="saveData()">Save</button>
+  <div class="section" style="text-align: center;">
+    <button id="saveBtn">Save Everything ❤️</button>
+  </div>
 
   <script>
     const input1 = document.getElementById("input1");
@@ -177,44 +178,74 @@
     const hate = document.getElementById("hate");
     const feeling = document.getElementById("feeling");
 
+    function updateAndSaveName(id, value) {
+      document.getElementById(id).textContent = value;
+      localStorage.setItem(id, value);
+    }
+
     input1.addEventListener("input", () => {
-      name1.textContent = input1.value || "Ck";
+      updateAndSaveName("name1", input1.value);
     });
 
     input2.addEventListener("input", () => {
-      name2.textContent = input2.value || "Mavi";
+      updateAndSaveName("name2", input2.value);
     });
 
-    function loadImage(event, imgId) {
-      const image = document.getElementById(imgId);
-      image.src = URL.createObjectURL(event.target.files[0]);
-    }
+    grateful.addEventListener("input", () => {
+      localStorage.setItem("grateful", grateful.value);
+    });
 
-    function saveData() {
-      localStorage.setItem('name1', input1.value);
-      localStorage.setItem('name2', input2.value);
-      localStorage.setItem('grateful', grateful.value);
-      localStorage.setItem('hate', hate.value);
-      localStorage.setItem('feeling', feeling.value);
+    hate.addEventListener("input", () => {
+      localStorage.setItem("hate", hate.value);
+    });
+
+    feeling.addEventListener("input", () => {
+      localStorage.setItem("feeling", feeling.value);
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      localStorage.setItem("name1", input1.value);
+      localStorage.setItem("name2", input2.value);
+      localStorage.setItem("grateful", grateful.value);
+      localStorage.setItem("hate", hate.value);
+      localStorage.setItem("feeling", feeling.value);
+      localStorage.setItem("img1Data", document.getElementById("img1").src);
+      localStorage.setItem("img2Data", document.getElementById("img2").src);
+      alert("Saved successfully! 💾");
+    });
+
+    function loadImage(event, imgId, storageKey) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        document.getElementById(imgId).src = reader.result;
+        localStorage.setItem(storageKey, reader.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
 
     window.onload = function () {
-      if (localStorage.getItem('name1')) {
-        input1.value = localStorage.getItem('name1');
+      if (localStorage.getItem("name1")) {
+        input1.value = localStorage.getItem("name1");
         name1.textContent = input1.value;
       }
-      if (localStorage.getItem('name2')) {
-        input2.value = localStorage.getItem('name2');
+      if (localStorage.getItem("name2")) {
+        input2.value = localStorage.getItem("name2");
         name2.textContent = input2.value;
       }
-      if (localStorage.getItem('grateful')) {
-        grateful.value = localStorage.getItem('grateful');
+      if (localStorage.getItem("grateful")) {
+        grateful.value = localStorage.getItem("grateful");
       }
-      if (localStorage.getItem('hate')) {
-        hate.value = localStorage.getItem('hate');
+      if (localStorage.getItem("hate")) {
+        hate.value = localStorage.getItem("hate");
       }
-      if (localStorage.getItem('feeling')) {
-        feeling.value = localStorage.getItem('feeling');
+      if (localStorage.getItem("feeling")) {
+        feeling.value = localStorage.getItem("feeling");
+      }
+      if (localStorage.getItem("img1Data")) {
+        document.getElementById("img1").src = localStorage.getItem("img1Data");
+      }
+      if (localStorage.getItem("img2Data")) {
+        document.getElementById("img2").src = localStorage.getItem("img2Data");
       }
     };
   </script>
