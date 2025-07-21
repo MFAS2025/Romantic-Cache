@@ -4,97 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Romantic Cache</title>
+  <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#d6336c" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', Arial, sans-serif;
-      background-color: #fff0f5;
-      color: #333;
-    }
-
-    .app-container {
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .toggles label {
-      margin-right: 10px;
-    }
-
-    input[type="text"],
-    input[type="date"],
-    textarea {
-      width: 100%;
-      padding: 8px;
-      margin: 5px 0 15px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      padding: 10px 15px;
-      border: none;
-      background-color: #d6336c;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #b02759;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    /* Floating Hearts */
-    .floating-hearts {
-      position: fixed;
-      pointer-events: none;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .heart {
-      position: absolute;
-      font-size: 24px;
-      animation: float 6s linear infinite;
-      user-select: none;
-      color: red;
-      font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(100vh) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-10vh) scale(0.5);
-        opacity: 0;
-      }
-    }
-  </style>
 </head>
 <body>
   <div class="floating-hearts" id="floatingHearts"></div>
@@ -118,11 +29,11 @@
 
       <div class="profile-pictures">
         <div>
-          <img id="img1" src="" alt="You" />
+          <img id="img1" src="1.jpg" alt="CK" />
           <input type="file" id="file1" accept="image/*" />
         </div>
         <div>
-          <img id="img2" src="" alt="Partner" />
+          <img id="img2" src="2.jpg" alt="Mavi" />
           <input type="file" id="file2" accept="image/*" />
         </div>
       </div>
@@ -150,7 +61,7 @@
       <div class="section">
         <h2>🎶 Our Love Song</h2>
         <audio id="loveAudio" controls>
-          <source src="Lover.mp3" type="audio/mpeg">
+          <source src="Lover.mp3" type="audio/mpeg" />
         </audio>
       </div>
     </main>
@@ -158,23 +69,12 @@
 
   <!-- Background Music: Lover.mp3 -->
   <audio id="bgMusic" loop>
-    <source src="Lover.mp3" type="audio/mpeg">
+    <source src="Lover.mp3" type="audio/mpeg" />
   </audio>
 
+  <script src="script.js"></script>
   <script>
-    // Floating hearts
-    setInterval(() => {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.textContent = '❤️';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.top = '100vh';
-      document.getElementById('floatingHearts').appendChild(heart);
-
-      setTimeout(() => heart.remove(), 6000); // Match animation
-    }, 500);
-
-    // Music autoplay on interaction
+    // Autoplay after user interacts
     const bgMusic = document.getElementById('bgMusic');
     function playMusicOnce() {
       bgMusic.play().catch(err => console.warn('Autoplay blocked:', err));
