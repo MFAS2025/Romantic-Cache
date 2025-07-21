@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', Arial, sans-serif;
   background-color: #fff0f5;
   color: #333;
 }
@@ -28,7 +28,9 @@ header {
   margin-right: 10px;
 }
 
-input[type="text"], input[type="date"], textarea {
+input[type="text"],
+input[type="date"],
+textarea {
   width: 100%;
   padding: 8px;
   margin: 5px 0 15px 0;
@@ -67,9 +69,11 @@ button:hover {
 
 .heart {
   position: absolute;
-  width: 20px;
+  font-size: 24px;
   animation: float 6s linear infinite;
   user-select: none;
+  color: red;
+  font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
 }
 
 @keyframes float {
